@@ -8,8 +8,8 @@ const Button = ({ name, onClick }) => {
   return <button onClick={onClick}>{name}</button>;
 };
 
-const Feedback = ({ name, count }) => {
-  return <p>{name} {count}</p>;
+const StatisticLine = ({ text, value }) => {
+  return <p>{text} {value}</p>;
 }
 
 const Statistics = ({ good, neutral, bad }) => {
@@ -23,12 +23,12 @@ const Statistics = ({ good, neutral, bad }) => {
 
   return (
     <div>
-      <Feedback name="good" count={good} />
-      <Feedback name="neutral" count={neutral} />
-      <Feedback name="bad" count={bad} />
-      <Feedback name="total" count={total} />
-      <Feedback name="average" count={average} />
-      <Feedback name="positive" count={positive + " %"} />
+      <StatisticLine text="good" value={good} />
+      <StatisticLine text="neutral" value={neutral} />
+      <StatisticLine text="bad" value={bad} />
+      <StatisticLine text="total" value={total} />
+      <StatisticLine text="average" value={average} />
+      <StatisticLine text="positive" value={positive + " %"} />
     </div>
   );
 };
