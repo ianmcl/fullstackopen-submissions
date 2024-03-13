@@ -125,6 +125,121 @@ const Content = ... {
 
 Our application passes on information in quite a primitive way at the moment, since it is based on individual variables. We shall fix that in [part 2](https://fullstackopen.com/en/part2), but before that, let's go to part1b to learn about JavaScript.
 
+## Exercises 1.3.-1.5.
+
+_We continue building the application that we started working on in the previous exercises. You can write the code into the same project since we are only interested in the final state of the submitted application._
+
+**Pro-tip:** you may run into issues when it comes to the structure of the `props` that components receive. A good way to make things more clear is by printing the props to the console, e.g. as follows:
+
+```javascript
+const Header = (props) => {
+  console.log(props);
+  return <h1>{props.course}</h1>;
+};
+```
+
+If and when you encounter an error message
+
+> _`Objects are not valid as a React child`_
+
+keep in mind the things told [here](https://fullstackopen.com/en/part1/introduction_to_react#do-not-render-objects).
+
+### 1.3: course information step3
+
+Let's move forward to using objects in our application. Modify the variable definitions of the `App` component as follows and also refactor the application so that it still works:
+
+```javascript
+const App = () => {
+  const course = "Half Stack application development";
+  const part1 = {
+    name: "Fundamentals of React",
+    exercises: 10,
+  };
+  const part2 = {
+    name: "Using props to pass data",
+    exercises: 7,
+  };
+  const part3 = {
+    name: "State of a component",
+    exercises: 14,
+  };
+
+  return <div>...</div>;
+};
+```
+
+### 1.4: course information step4
+
+And then place the objects into an array. Modify the variable definitions of `App` into the following form and modify the other parts of the application accordingly:
+
+```javascript
+const App = () => {
+  const course = "Half Stack application development";
+  const parts = [
+    {
+      name: "Fundamentals of React",
+      exercises: 10,
+    },
+    {
+      name: "Using props to pass data",
+      exercises: 7,
+    },
+    {
+      name: "State of a component",
+      exercises: 14,
+    },
+  ];
+
+  return <div>...</div>;
+};
+```
+
+**NB** at this point _you can assume that there are always three items_, so there is no need to go through the arrays using loops. We will come back to the topic of rendering components based on items in arrays with a more thorough exploration in the [next part of the course](https://fullstackopen.com/en/part2).
+
+However, do not pass different objects as separate props from the `App` component to the components `Content` and `Total`. Instead, pass them directly as an array:
+
+```javascript
+const App = () => {
+  // const definitions
+
+  return (
+    <div>
+      <Header course={course} />
+      <Content parts={parts} />
+      <Total parts={parts} />
+    </div>
+  );
+};
+```
+
+### 1.5: course information step5
+
+Let's take the changes one step further. Change the course and its parts into a single JavaScript object. Fix everything that breaks.
+
+```javascript
+const App = () => {
+  const course = {
+    name: "Half Stack application development",
+    parts: [
+      {
+        name: "Fundamentals of React",
+        exercises: 10,
+      },
+      {
+        name: "Using props to pass data",
+        exercises: 7,
+      },
+      {
+        name: "State of a component",
+        exercises: 14,
+      },
+    ],
+  };
+
+  return <div>...</div>;
+};
+```
+
 ---
 
 ## React + Vite
