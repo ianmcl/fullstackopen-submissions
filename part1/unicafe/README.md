@@ -1,6 +1,6 @@
 # JavaScript
 
-## Exercises 1.6.-1.14.
+## Exercises 1.6.-1.11.
 
 Submit your solutions to the exercises by first pushing your code to GitHub and then marking the completed exercises into the "my submissions" tab of the [submission application](https://studies.cs.helsinki.fi/stats/courses/fullstackopen).
 
