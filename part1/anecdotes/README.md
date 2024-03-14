@@ -81,7 +81,7 @@ This was the last exercise for this part of the course and it's time to push you
 
 ---
 
-# React + Vite
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
