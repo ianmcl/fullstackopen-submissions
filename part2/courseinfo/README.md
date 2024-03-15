@@ -1,4 +1,4 @@
-# Part 2: Communicating with server
+# Part 2a Rendering a collection, modules
 
 ## Exercises 2.1.-2.5.
 
@@ -10,7 +10,7 @@ Let's finish the code for rendering course contents from exercises 1.1 - 1.5. Yo
 
 Generally, it's not recommended that you copy a project's whole contents and/or add the `node_modules` directory to the version control system.
 
-Let's change the A`pp component like so:
+Let's change the `App` component like so:
 
 ```javascript
 const App = () => {
