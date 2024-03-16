@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import phonebookService from './services/phonebook'
 
 const Filter = ({ filter, setFilter }) => {
   const handleFilterChange = (e) => {
@@ -23,10 +23,10 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson }) => {
         number: newPerson.number
       }
 
-      axios
-        .post('http://localhost:3001/persons', personObj)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+      phonebookService
+        .create(personObj)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
           setNewPerson({ name: '', number: '' })
         })
     }
@@ -73,12 +73,10 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    phonebookService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
