@@ -20,12 +20,15 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson }) => {
     } else {
       const personObj = {
         name: newPerson.name,
-        number: newPerson.number,
-        id: persons.length + 1
+        number: newPerson.number
       }
 
-      setPersons(persons.concat(personObj))
-      setNewPerson({ name: '', number: '' })
+      axios
+        .post('http://localhost:3001/persons', personObj)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewPerson({ name: '', number: '' })
+        })
     }
   }
 
