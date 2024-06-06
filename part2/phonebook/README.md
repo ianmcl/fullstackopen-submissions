@@ -1,6 +1,6 @@
 # Part 2b Forms
 
-## Exercises 2.6.-2.15.
+## Exercises 2.6.-2.10.
 
 In the first exercise, we will start working on an application that will be further developed in the later exercises. In related sets of exercises, it is sufficient to return the final version of your application. You may also make a separate commit after you have finished each part of the exercise set, but doing so is not required.
 
@@ -169,6 +169,10 @@ const App = () => {
 
 **NB**: You might run into problems in this exercise if you define your components "in the wrong place". Now would be a good time to rehearse the chapter [do not define a component in another component](https://fullstackopen.com/en/part1/a_more_complex_state_debugging_react_apps#do-not-define-components-within-components) from the last part.
 
+# Part 2c Getting data from server2
+
+## Exercise 2.11.
+
 ### 2.11: The Phonebook Step 6
 
 We continue with developing the phonebook. Store the initial state of the application in the file `db.json`, which should be placed in the root of the project.
@@ -217,6 +221,10 @@ Error: listen EADDRINUSE 0.0.0.0:3001
 it means that port 3001 is already in use by another application, e.g. in use by an already running json-server. Close the other application, or change the port in case that doesn't work.
 
 Modify the application such that the initial state of the data is fetched from the server using the _axios_-library. Complete the fetching with an [Effect hook](https://react.dev/reference/react/useEffect).
+
+# Part 2d Altering data in servers
+
+## Exercises 2.12.-2.15.
 
 ### 2.12: The Phonebook step 7
 
