@@ -17,7 +17,22 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson }) => {
 
     const existingPerson = persons.find(person => person.name === newPerson.name)
     if (existingPerson) {
-      alert(`${newPerson.name} is already added to the phonebook`)
+      const confirmUpdate = window.confirm(
+        `${newPerson.name} is already added to the phonebook, replace the old number with a new one?`
+      )
+      if (confirmUpdate) {
+        const updatedPerson = { ...existingPerson, number: newPerson.number }
+        phonebookService
+          .update(existingPerson.id, updatedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson))
+            setNewPerson({ name: '', number: '' })
+          })
+          .catch(error => {
+            console.error('Failed to update person:', error)
+            alert(`Failed to update ${newPerson.name}, please try again later`)
+          })
+      }
     } else {
       const personObj = {
         name: newPerson.name,
