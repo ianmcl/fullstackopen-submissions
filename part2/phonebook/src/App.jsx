@@ -15,7 +15,8 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson }) => {
   const addPerson = (e) => {
     e.preventDefault()
 
-    if (persons.some(person => person.name === newPerson.name)) {
+    const existingPerson = persons.find(person => person.name === newPerson.name)
+    if (existingPerson) {
       alert(`${newPerson.name} is already added to the phonebook`)
     } else {
       const personObj = {
@@ -28,6 +29,10 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson }) => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNewPerson({ name: '', number: '' })
+        })
+        .catch(error => {
+          console.error('Failed to add person:', error)
+          alert('Failed to add person, please try again later')
         })
     }
   }
@@ -49,20 +54,33 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson }) => {
   )
 }
 
-const Person = ({ person }) => {
+const Person = ({ person, setPersons }) => {
+  const deletePerson = () => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      phonebookService.deleteEntry(person.id)
+        .then(() => {
+          setPersons(prevPersons => prevPersons.filter(p => p.id !== person.id))
+        })
+        .catch(error => {
+          console.error('Failed to delete person:', error)
+          alert(`Failed to delete ${person.name}, please try again later`)
+        })
+    }
+  }
+
   return (
-    <p>{person.name} {person.number}</p>
+    <p>{person.name} {person.number} <button onClick={deletePerson}>delete</button></p>
   )
 }
 
-const Persons = ({ persons, filter }) => {
+const Persons = ({ persons, filter, setPersons }) => {
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(filter.toLowerCase())
   )
 
   return (
     filteredPersons.map(person =>
-      <Person key={person.id} person={person} />
+      <Person key={person.id} person={person} setPersons={setPersons} />
     )
   )
 }
@@ -78,6 +96,10 @@ const App = () => {
       .then(initialPersons => {
         setPersons(initialPersons)
       })
+      .catch(error => {
+        console.error('Failed to fetch persons:', error)
+        alert('Failed to fetch persons, please try again later')
+      })
   }, [])
 
   return (
@@ -87,7 +109,7 @@ const App = () => {
       <h2>Add a new contact</h2>
       <PersonForm persons={persons} setPersons={setPersons} newPerson={newPerson} setNewPerson={setNewPerson} />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} setPersons={setPersons} />
     </div>
   )
 }
