@@ -32,8 +32,8 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson, setNotificat
             setTimeout(() => setNotification({ message: null, type: '' }), 5000)
           })
           .catch(error => {
-            console.error('Failed to update person:', error)
-            alert(`Failed to update ${newPerson.name}, please try again later`)
+            setNotification({ message: `Failed to update ${newPerson.name}: ${error.response.data.error}`, type: 'error' })
+            setTimeout(() => setNotification({ message: null, type: '' }), 5000)
           })
       }
     } else {
@@ -51,8 +51,8 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson, setNotificat
           setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
         .catch(error => {
-          console.error('Failed to add person:', error)
-          alert('Failed to add person, please try again later')
+          setNotification({ message: `Failed to add person: ${error.response.data.error}`, type: 'error' })
+          setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
     }
   }
@@ -84,8 +84,8 @@ const Person = ({ person, setPersons, setNotification }) => {
           setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
         .catch(error => {
-          console.error('Failed to delete person:', error)
-          alert(`Failed to delete ${person.name}, please try again later`)
+          setNotification({ message: `Information of ${person.name} has already been removed from server`, type: 'error' })
+          setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
     }
   }
@@ -120,8 +120,8 @@ const App = () => {
         setPersons(initialPersons)
       })
       .catch(error => {
-        console.error('Failed to fetch persons:', error)
-        alert('Failed to fetch persons, please try again later')
+        setNotification({ message: `Failed to fetch persons: ${error.response.data.error}`, type: 'error' })
+        setTimeout(() => setNotification({ message: null, type: '' }), 5000)
       })
   }, [])
 
