@@ -1,0 +1,28 @@
+.App {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.results {
+  margin-top: 20px;
+}
+
+.results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.results ul li {
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.country-details {
+  margin-top: 20px;
+}
+
+.country-details img {
+  max-width: 100px;
+  height: auto;
+}
