@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Notification from './components/Notification'
 import phonebookService from './services/phonebook'
 
 const Filter = ({ filter, setFilter }) => {
@@ -11,7 +12,7 @@ const Filter = ({ filter, setFilter }) => {
   )
 }
 
-const PersonForm = ({ persons, setPersons, newPerson, setNewPerson }) => {
+const PersonForm = ({ persons, setPersons, newPerson, setNewPerson, setNotification }) => {
   const addPerson = (e) => {
     e.preventDefault()
 
@@ -27,6 +28,8 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson }) => {
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson))
             setNewPerson({ name: '', number: '' })
+            setNotification({ message: `Updated ${returnedPerson.name}`, type: 'success' })
+            setTimeout(() => setNotification({ message: null, type: '' }), 5000)
           })
           .catch(error => {
             console.error('Failed to update person:', error)
@@ -44,6 +47,8 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson }) => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNewPerson({ name: '', number: '' })
+          setNotification({ message: `Added ${returnedPerson.name}`, type: 'success' })
+          setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
         .catch(error => {
           console.error('Failed to add person:', error)
@@ -69,12 +74,14 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson }) => {
   )
 }
 
-const Person = ({ person, setPersons }) => {
+const Person = ({ person, setPersons, setNotification }) => {
   const deletePerson = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
       phonebookService.deleteEntry(person.id)
         .then(() => {
           setPersons(prevPersons => prevPersons.filter(p => p.id !== person.id))
+          setNotification({ message: `Deleted ${person.name}`, type: 'success' })
+          setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
         .catch(error => {
           console.error('Failed to delete person:', error)
@@ -88,14 +95,14 @@ const Person = ({ person, setPersons }) => {
   )
 }
 
-const Persons = ({ persons, filter, setPersons }) => {
+const Persons = ({ persons, filter, setPersons, setNotification }) => {
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(filter.toLowerCase())
   )
 
   return (
     filteredPersons.map(person =>
-      <Person key={person.id} person={person} setPersons={setPersons} />
+      <Person key={person.id} person={person} setPersons={setPersons} setNotification={setNotification} />
     )
   )
 }
@@ -104,6 +111,7 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [newPerson, setNewPerson] = useState({ name: '', number: '' })
   const [filter, setFilter] = useState('')
+  const [notification, setNotification] = useState({ message: null, type: '' })
 
   useEffect(() => {
     phonebookService
@@ -120,11 +128,18 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification.message} type={notification.type} />
       <Filter filter={filter} setFilter={setFilter} />
       <h2>Add a new contact</h2>
-      <PersonForm persons={persons} setPersons={setPersons} newPerson={newPerson} setNewPerson={setNewPerson} />
+      <PersonForm
+        persons={persons}
+        setPersons={setPersons}
+        newPerson={newPerson}
+        setNewPerson={setNewPerson}
+        setNotification={setNotification}
+      />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} setPersons={setPersons} />
+      <Persons persons={persons} filter={filter} setPersons={setPersons} setNotification={setNotification} />
     </div>
   )
 }
