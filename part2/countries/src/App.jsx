@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+const apiKey = import.meta.env.VITE_OPENWEATHERMAP_API_KEY;
 
 function filterCountries(countriesData, query) {
   const matchedCountries = countriesData.filter(country =>
@@ -21,11 +22,13 @@ function App() {
   const [query, setQuery] = useState('');
   const [countriesData, setCountriesData] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [weather, setWeather] = useState(null);
 
   const handleInputChange = (event) => {
     const inputQuery = event.target.value;
     setQuery(inputQuery);
     setSelectedCountry(null);
+    setWeather(null);
 
     if (inputQuery.trim()) {
       fetchCountries(inputQuery.trim());
@@ -45,8 +48,20 @@ function App() {
       });
   };
 
+  const fetchWeather = (capital) => {
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=${apiKey}&units=metric`)
+      .then(response => {
+        setWeather(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching weather data:', error);
+        setWeather(null);
+      });
+  };
+
   const handleCountryClick = (country) => {
     setSelectedCountry(country);
+    fetchWeather(country.capital[0]);
   };
 
   const { message, countries } = filterCountries(countriesData, query);
@@ -85,6 +100,17 @@ function App() {
             ))}
           </ul>
           <img src={selectedCountry.flags.png} alt={`Flag of ${selectedCountry.name.common}`} />
+          {weather && (
+            <div className="weather">
+              <h3>Weather in {selectedCountry.capital}</h3>
+              <p>Temperature: {weather.main.temp} °C</p>
+              <img
+                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                alt={weather.weather[0].description}
+              />
+              <p>Wind: {weather.wind.speed} m/s</p>
+            </div>
+          )}
         </div>
       )}
     </div>
