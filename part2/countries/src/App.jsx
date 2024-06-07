@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-function filterCountries(countriesData, query, selectedCountry) {
-  if (selectedCountry) {
-    return { country: selectedCountry };
-  }
-
+function filterCountries(countriesData, query) {
   const matchedCountries = countriesData.filter(country =>
     country.name.common.toLowerCase().includes(query.toLowerCase())
   );
@@ -15,7 +11,7 @@ function filterCountries(countriesData, query, selectedCountry) {
   } else if (matchedCountries.length > 1) {
     return { message: '', countries: matchedCountries };
   } else if (matchedCountries.length === 1) {
-    return { message: '', country: matchedCountries[0] };
+    return { message: '', countries: matchedCountries };
   } else {
     return { message: 'No matches found.', countries: [] };
   }
@@ -53,7 +49,7 @@ function App() {
     setSelectedCountry(country);
   };
 
-  const { message, countries, country } = filterCountries(countriesData, query, selectedCountry);
+  const { message, countries } = filterCountries(countriesData, query);
 
   return (
     <div className="App">
@@ -66,28 +62,29 @@ function App() {
       />
       <div className="results">
         {message && <p>{message}</p>}
-        {countries && countries.length > 0 && (
+        {!selectedCountry && countries && countries.length > 0 && (
           <ul>
             {countries.map(country => (
-              <li key={country.name.common} onClick={() => handleCountryClick(country)}>
+              <li key={country.name.common}>
                 {country.name.common}
+                <button onClick={() => handleCountryClick(country)}>Show</button>
               </li>
             ))}
           </ul>
         )}
       </div>
-      {country && (
+      {selectedCountry && (
         <div className="country-details">
-          <h2>{country.name.common}</h2>
-          <p>Capital: {country.capital}</p>
-          <p>Area: {country.area} km²</p>
+          <h2>{selectedCountry.name.common}</h2>
+          <p>Capital: {selectedCountry.capital}</p>
+          <p>Area: {selectedCountry.area} km²</p>
           <p>Languages:</p>
           <ul>
-            {Object.values(country.languages).map((language, index) => (
+            {Object.values(selectedCountry.languages).map((language, index) => (
               <li key={index}>{language}</li>
             ))}
           </ul>
-          <img src={country.flags.png} alt={`Flag of ${country.name.common}`} />
+          <img src={selectedCountry.flags.png} alt={`Flag of ${selectedCountry.name.common}`} />
         </div>
       )}
     </div>
