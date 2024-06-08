@@ -55,10 +55,23 @@ app.delete('/api/persons/:id', (request, response) => {
   persons = persons.filter(person => person.id !== id)
 
   if (persons.length < initialLength) {
-    response.status(204).end() // 204 No Content
+    response.status(204).end()
   } else {
     response.status(404).json({ error: 'person not found' })
   }
+})
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+
+  const newPerson = {
+    id: Math.floor(Math.random() * 1000000),
+    name: body.name,
+    number: body.number
+  }
+
+  persons = persons.concat(newPerson)
+  response.json(newPerson)
 })
 
 const PORT = 3001
