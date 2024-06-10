@@ -75,7 +75,7 @@ Test that your functionality works with either Postman or the Visual Studio Code
 
 ### 3.5: Phonebook backend step 5
 
-Expand the backend so that new phonebook entries can be added by making HTTP POST requests to the address [http://localhost:3001/api/persons](http://localhost:3001/api/persons).
+Expand the backend so that new phonebook entries can be added by making HTTP POST requests to the address http://localhost:3001/api/persons.
 
 Generate a new id for the phonebook entry with the [Math.random](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) function. Use a big enough range for your random values so that the likelihood of creating duplicate ids is small.
 
@@ -112,7 +112,7 @@ Test the deployed backend with a browser and Postman or VS Code REST client to e
 
 **PRO TIP:** When you deploy your application to Internet, it is worth it to at least in the beginning keep an eye on the logs of the application **AT ALL TIMES**.
 
-Create a README.md at the root of your repository, and add a link to your online application to it: https://phonebook-backend-96c6.onrender.com/api/persons
+Create a README.md at the root of your repository, and add a link to your online application to it: https://phonebook-backend-96c6.onrender.com
 
 **NOTE**: as it was said, you should deploy the BACKEND to the cloud service. If you are using Fly.io the commands should be run in the root directory of the backend (that is, in the same directory where the backend package.json is). In case of using Render, the backend must be in the root of your repository.
 
