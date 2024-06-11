@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const Person = require('./models/person')
 
+// Middleware to log requests
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
@@ -15,6 +16,7 @@ app.use(express.static('dist'))
 app.use(express.json())
 app.use(requestLogger)
 
+// Get all persons
 app.get('/api/persons', (request, response, next) => {
   Person.find({})
     .then(persons => {
@@ -23,6 +25,7 @@ app.get('/api/persons', (request, response, next) => {
     .catch(error => next(error))
 })
 
+// Add a new person
 app.post('/api/persons', (request, response, next) => {
   const { name, number } = request.body
 
@@ -38,6 +41,7 @@ app.post('/api/persons', (request, response, next) => {
     .catch(error => next(error))
 })
 
+// Update a person
 app.put('/api/persons/:id', (request, response, next) => {
   const { name, number } = request.body
 
@@ -56,18 +60,16 @@ app.put('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
+// Delete a person
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then(result => {
-      if (result) {
-        response.status(204).end()
-      } else {
-        response.status(404).send({ error: 'Person not found' })
-      }
+    .then(() => {
+      response.status(204).end()
     })
     .catch(error => next(error))
 })
 
+// Get a single person by ID
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
     .then(person => {
@@ -80,6 +82,7 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
+// Info route
 app.get('/info', (request, response, next) => {
   Person.countDocuments({})
     .then(count => {
@@ -92,13 +95,14 @@ app.get('/info', (request, response, next) => {
     .catch(error => next(error))
 })
 
+// Unknown endpoint middleware
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-// handler of requests with unknown endpoint
 app.use(unknownEndpoint)
 
+// Error handling middleware
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
@@ -111,10 +115,10 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
-// handler of requests with result to errors
 app.use(errorHandler)
 
-const PORT = process.env.PORT
+// Start the server
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })

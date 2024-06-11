@@ -299,3 +299,11 @@ Push the latest version to Fly.io/Render and verify that everything works there 
 **NOTE**: you should deploy the BACKEND to the cloud service. If you are using Fly.io the commands should be run in the root directory of the backend (that is, in the same directory where the backend package.json is). In case of using Render, the backend must be in the root of your repository.
 
 You shall NOT be deploying the frontend directly at any stage of this part. It is just backend repository that is deployed throughout the whole part, nothing else.
+
+## Exercise 3.22.
+
+### 3.22: Lint configuration
+
+Add ESlint to your application and fix all the warnings.
+
+This was the last exercise of this part of the course. It's time to push your code to GitHub and mark all of your finished exercises to the [exercise submission system](https://studies.cs.helsinki.fi/stats/courses/fullstackopen).

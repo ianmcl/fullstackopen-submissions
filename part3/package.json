@@ -7,17 +7,21 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
     "start": "node index.js",
+    "lint": "eslint .",
     "build:ui": "rm -rf dist && cd ../part2/phonebook && npm run build && cp -r ./dist ../../part3/dist",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "author": "Ian McLaughlin",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.4.1"
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin-js": "^1.6.1",
+    "eslint": "^8.56.0",
     "nodemon": "^3.1.3"
   }
 }
