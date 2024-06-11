@@ -15,23 +15,26 @@ app.use(express.static('dist'))
 app.use(express.json())
 app.use(requestLogger)
 
-app.get('/api/persons', (request, response) => {
-  Person.find({}).then(persons => {
-    response.json(persons)
-  })
+app.get('/api/persons', (request, response, next) => {
+  Person.find({})
+    .then(persons => {
+      response.json(persons)
+    })
+    .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response, next) => {
-  const body = request.body
+  const { name, number } = request.body
 
   const person = new Person({
-    name: body.name,
-    number: body.number,
+    name,
+    number,
   })
 
-  person.save().then(savedPerson => {
-    response.json(savedPerson)
-  })
+  person.save()
+    .then(savedPerson => {
+      response.json(savedPerson)
+    })
     .catch(error => next(error))
 })
 
@@ -41,9 +44,14 @@ app.put('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndUpdate(
     request.params.id,
     { name, number },
-    { new: true, runValidators: true, context: 'query' })
+    { new: true, runValidators: true, context: 'query' }
+  )
     .then(updatedPerson => {
-      response.json(updatedPerson)
+      if (updatedPerson) {
+        response.json(updatedPerson)
+      } else {
+        response.status(404).send({ error: 'Person not found' })
+      }
     })
     .catch(error => next(error))
 })
@@ -51,7 +59,11 @@ app.put('/api/persons/:id', (request, response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
     .then(result => {
-      response.status(204).end()
+      if (result) {
+        response.status(204).end()
+      } else {
+        response.status(404).send({ error: 'Person not found' })
+      }
     })
     .catch(error => next(error))
 })

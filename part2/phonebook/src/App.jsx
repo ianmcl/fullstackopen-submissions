@@ -32,8 +32,10 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson, setNotificat
             setTimeout(() => setNotification({ message: null, type: '' }), 5000)
           })
           .catch(error => {
-            console.log(error.response.data)
-            setNotification({ message: `Failed to update ${newPerson.name}: ${error.response.data.error}`, type: 'error' })
+            const errorMessage = error.response && error.response.data && error.response.data.error
+              ? error.response.data.error
+              : 'Unknown error'
+            setNotification({ message: `Failed to update ${newPerson.name}: ${errorMessage}`, type: 'error' })
             setTimeout(() => setNotification({ message: null, type: '' }), 5000)
           })
       }
@@ -52,8 +54,10 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson, setNotificat
           setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
         .catch(error => {
-          console.log(error.response.data)
-          setNotification({ message: `Failed to add person: ${error.response.data.error}`, type: 'error' })
+          const errorMessage = error.response && error.response.data && error.response.data.error
+            ? error.response.data.error
+            : 'Unknown error'
+          setNotification({ message: `Failed to add person: ${errorMessage}`, type: 'error' })
           setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
     }
@@ -76,6 +80,7 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson, setNotificat
   )
 }
 
+
 const Person = ({ person, setPersons, setNotification }) => {
   const deletePerson = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
@@ -86,8 +91,10 @@ const Person = ({ person, setPersons, setNotification }) => {
           setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
         .catch(error => {
-          console.log(error.response.data.error)
-          setNotification({ message: `Failed to delete ${person.name}: ${error.response.data.error}`, type: 'error' })
+          const errorMessage = error.response && error.response.data && error.response.data.error
+            ? error.response.data.error
+            : 'Unknown error'
+          setNotification({ message: `Failed to delete ${person.name}: ${errorMessage}`, type: 'error' })
           setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
     }
@@ -123,8 +130,10 @@ const App = () => {
         setPersons(initialPersons)
       })
       .catch(error => {
-        console.log(error.response.data)
-        setNotification({ message: `Failed to fetch persons: ${error.response.data.error}`, type: 'error' })
+        const errorMessage = error.response && error.response.data && error.response.data.error
+          ? error.response.data.error
+          : 'Unknown error'
+        setNotification({ message: `Failed to fetch persons: ${errorMessage}`, type: 'error' })
         setTimeout(() => setNotification({ message: null, type: '' }), 5000)
       })
   }, [])
