@@ -247,3 +247,55 @@ Also update the handling of the `api/persons/:id` and `info` routes to use the d
 Inspecting an individual phonebook entry from the browser should look like this:
 
 ![screenshot of browser showing one person with api/persons/their_id](https://fullstackopen.com/static/853a1d57372a2b5c8fc1249b682d59a7/5a190/49.png)
+
+# Part 3d Validation and ESLint
+
+## Exercises 3.19.-3.21.
+
+### 3.19\*: Phonebook database, step 7
+
+Expand the validation so that the name stored in the database has to be at least three characters long.
+
+Expand the frontend so that it displays some form of error message when a validation error occurs. Error handling can be implemented by adding a `catch` block as shown below:
+
+```
+    personService
+        .create({ ... })
+        .then(createdPerson => {
+          // ...
+        })
+        .catch(error => {
+          // this is the way to access the error message
+          console.log(error.response.data.error)
+        })
+```
+
+You can display the default error message returned by Mongoose, even though they are not as readable as they could be:
+
+![phonebook screenshot showing person validation failure](https://fullstackopen.com/static/fddf847e340f060549c3029f464a5493/5a190/56e.png)
+
+**NB:** On update operations, mongoose validators are off by default. [Read the documentation](https://mongoosejs.com/docs/validation.html) to determine how to enable them.
+
+### 3.20\*: Phonebook database, step 8
+
+Add validation to your phonebook application, which will make sure that phone numbers are of the correct form. A phone number must:
+
+- have length of 8 or more
+- be formed of two parts that are separated by -, the first part has two or three numbers and the second part also consists of numbers
+
+  - eg. 09-1234556 and 040-22334455 are valid phone numbers
+  - eg. 1234556, 1-22334455 and 10-22-334455 are invalid
+
+Use a [Custom validator](https://mongoosejs.com/docs/validation.html#custom-validators) to implement the second part of the validation.
+
+If an HTTP POST request tries to add a person with an invalid phone number, the server should respond with an appropriate status code and error message.
+
+### 3.21 Deploying the database backend to production
+
+Generate a new "full stack" version of the application by creating a new production build of the frontend, and copying it to the backend repository. Verify that everything works locally by using the entire application from the address [http://localhost:3001/](http://localhost:3001/).
+
+Push the latest version to Fly.io/Render and verify that everything works there as well.
+
+**NOTE**: you should deploy the BACKEND to the cloud service. If you are using Fly.io the commands should be run in the root directory of the backend (that is, in the same directory where the backend package.json is). In case of using Render, the backend must be in the root of your repository.
+
+You shall NOT be deploying the frontend directly at any stage of this part. It is just backend repository that is deployed throughout the whole part, nothing else.

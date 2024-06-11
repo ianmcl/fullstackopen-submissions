@@ -32,7 +32,8 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson, setNotificat
             setTimeout(() => setNotification({ message: null, type: '' }), 5000)
           })
           .catch(error => {
-            setNotification({ message: `Failed to update ${newPerson.name}: ${error.response.data}`, type: 'error' })
+            console.log(error.response.data)
+            setNotification({ message: `Failed to update ${newPerson.name}: ${error.response.data.error}`, type: 'error' })
             setTimeout(() => setNotification({ message: null, type: '' }), 5000)
           })
       }
@@ -51,7 +52,8 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson, setNotificat
           setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
         .catch(error => {
-          setNotification({ message: `Failed to add person: ${error.response.data}`, type: 'error' })
+          console.log(error.response.data)
+          setNotification({ message: `Failed to add person: ${error.response.data.error}`, type: 'error' })
           setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
     }
@@ -84,8 +86,8 @@ const Person = ({ person, setPersons, setNotification }) => {
           setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
         .catch(error => {
-          console.log(error.response.data)
-          setNotification({ message: `Failed to delete ${person.name}: ${error.response.data}`, type: 'error' })
+          console.log(error.response.data.error)
+          setNotification({ message: `Failed to delete ${person.name}: ${error.response.data.error}`, type: 'error' })
           setTimeout(() => setNotification({ message: null, type: '' }), 5000)
         })
     }
@@ -121,7 +123,8 @@ const App = () => {
         setPersons(initialPersons)
       })
       .catch(error => {
-        setNotification({ message: `Failed to fetch persons: ${error.response.data}`, type: 'error' })
+        console.log(error.response.data)
+        setNotification({ message: `Failed to fetch persons: ${error.response.data.error}`, type: 'error' })
         setTimeout(() => setNotification({ message: null, type: '' }), 5000)
       })
   }, [])
