@@ -26,6 +26,19 @@ app.get('/api/persons', (request, response) => {
   })
 })
 
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+
+  const person = new Person({
+    name: body.name,
+    number: body.number,
+  })
+
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
+})
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
