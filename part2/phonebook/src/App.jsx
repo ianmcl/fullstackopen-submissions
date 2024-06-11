@@ -80,7 +80,6 @@ const PersonForm = ({ persons, setPersons, newPerson, setNewPerson, setNotificat
   )
 }
 
-
 const Person = ({ person, setPersons, setNotification }) => {
   const deletePerson = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
