@@ -62,10 +62,26 @@ const mostLikes = (blogs) => {
   }
 }
 
+const initialBlogs = [
+  {
+    title: "Test Blog Post 1",
+    author: "Test Author 1",
+    url: "http://testurl_1.com",
+    likes: 3
+  },
+  {
+    title: "Test Blog Post 2",
+    author: "Test Author 2",
+    url: "http://testurl_2.com",
+    likes: 5
+  }
+]
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
-  mostLikes
+  mostLikes,
+  initialBlogs
 }
