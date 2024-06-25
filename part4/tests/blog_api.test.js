@@ -36,7 +36,7 @@ test('blogs have property id instead of _id', async () => {
   assert.strictEqual(firstBlog._id, undefined)
 })
 
-test.only('creating a new blog post', () => {
+test.only('creating a new blog post with async/await', async () => {
   const newBlog = {
     title: 'New Test Blog',
     author: 'Test Author',
@@ -44,19 +44,19 @@ test.only('creating a new blog post', () => {
     likes: 10
   }
 
-  return api.post('/api/blogs')
+  await api
+    .post('/api/blogs')
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
-    .then(() => {
-      return api.get('/api/blogs')
-        .then(response => {
-          const blogsAfterPost = response.body
-          assert.strictEqual(blogsAfterPost.length, helper.initialBlogs.length + 1)
-          const titles = blogsAfterPost.map(blog => blog.title)
-          assert.ok(titles.includes(newBlog.title))
-        })
-    })
+
+  const response = await api.get('/api/blogs')
+  const blogsAfterPost = response.body
+
+  assert.strictEqual(blogsAfterPost.length, helper.initialBlogs.length + 1)
+
+  const titles = blogsAfterPost.map(blog => blog.title)
+  assert.ok(titles.includes(newBlog.title))
 })
 
 after(async () => {
